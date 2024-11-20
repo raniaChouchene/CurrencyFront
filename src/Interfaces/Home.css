@@ -1,0 +1,75 @@
+.hero {
+  background: #979e80;
+  color: #fff;
+  padding: 60px 0;
+  text-align: center;
+}
+
+.hero-title {
+  font-size: 3rem;
+  margin-bottom: 20px;
+}
+
+.hero-text {
+  font-size: 1.25rem;
+  margin-bottom: 30px;
+}
+
+.cta-button {
+  background-color: #522a2e;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1rem;
+}
+
+.services {
+  background-color: #f0f2f5;
+  padding: 50px 0;
+}
+
+.services-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 40px;
+}
+
+.service-card {
+  border-radius: 20px; /* More rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  font-size: 1.25rem;
+}
+
+.card-icon {
+  margin-right: 10px;
+  font-size: 1.5rem;
+  color: #000000;
+}
+
+.footer {
+  background-color: #526375;
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+}
+.content {
+  margin-left: 250px; /* Adjust according to your sidebar width */
+  padding: 20px;
+}
+
+.services {
+  margin-left: 0;
+  padding-top: 40px;
+}
+
+.service-card {
+  margin-top: 16px;
+  max-width: 350px;
+  margin-left: auto;
+  margin-right: 0;
+}
