@@ -41,13 +41,19 @@ const services = [
 const Home = () => {
   return (
     <Layout>
-      {/* Hero Section */}
       <Content className="content">
-        <div className="hero">
-          <Row justify="center" align="middle">
-            <Col span={12}>
+        {/* "Trade the Future" Section */}
+        <div className="trade-future">
+          <Row gutter={[32, 32]} align="middle" style={{ margin: "10" }}>
+            {/* Left Section */}
+            <Col
+              xs={24}
+              md={12}
+              className="trade-text"
+              style={{ marginTop: "40px", paddingLeft: "16px" }}
+            >
               <Title level={1} className="hero-title">
-                Welcome to CryptoTracker
+                Trade the future
               </Title>
               <Paragraph className="hero-text">
                 Your one-stop platform for cryptocurrency tracking, market
@@ -55,7 +61,7 @@ const Home = () => {
                 with cutting-edge tools and real-time updates.
               </Paragraph>
               <Button type="primary" size="large" className="cta-button">
-                Start Tracking Now
+                Ouvrez un compte →
               </Button>
             </Col>
           </Row>
@@ -63,7 +69,11 @@ const Home = () => {
 
         {/* Services Section */}
         <div className="services">
-          <Row gutter={[16, 16]} justify="start" style={{ marginTop: "20px" }}>
+          <Row
+            gutter={[16, 16]}
+            justify="start"
+            style={{ marginTop: "40px", paddingLeft: "16px" }}
+          >
             {services.map((service, index) => (
               <Col key={index} xs={24} sm={24} md={12} lg={8}>
                 <Card
@@ -77,12 +87,10 @@ const Home = () => {
                   className="service-card"
                   bodyStyle={{ padding: "16px", backgroundColor: "#f7f7f7" }}
                   style={{
-                    borderRadius: "20px", // Make edges more rounded
+                    borderRadius: "20px",
                     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
                     marginTop: "16px",
-                    maxWidth: "350px", // Adjust width of the cards
-                    marginLeft: "auto", // Align cards to the right
-                    marginRight: "0", // Remove any additional margin on the right
+                    maxWidth: "350px",
                   }}
                 >
                   <p>{service.description}</p>

@@ -2,17 +2,24 @@
   background: #979e80;
   color: #fff;
   padding: 60px 0;
-  text-align: center;
+  text-align: left; /* Align text to the left */
+  font-family: "cursive";
 }
 
 .hero-title {
   font-size: 3rem;
   margin-bottom: 20px;
+  font-family: "cursive";
+  margin-top: 16px;
+  max-width: none; /* Remove width limitation */
+  text-align: left; /* Ensure text is left-aligned */
 }
 
 .hero-text {
   font-size: 1.25rem;
   margin-bottom: 30px;
+  font-family: "cursive";
+  text-align: left; /* Ensure text is left-aligned */
 }
 
 .cta-button {
@@ -20,17 +27,21 @@
   border: none;
   padding: 15px 30px;
   font-size: 1rem;
+  font-family: "cursive";
+  text-align: left; /* Align the button to the left */
 }
-
 .services {
   background-color: #f0f2f5;
   padding: 50px 0;
+  font-family: "cursive";
 }
 
 .services-title {
   text-align: center;
   font-size: 2rem;
   margin-bottom: 40px;
+
+  font-family: "cursive";
 }
 
 .service-card {
@@ -43,6 +54,8 @@
   display: flex;
   align-items: center;
   font-size: 1.25rem;
+
+  font-family: "cursive";
 }
 
 .card-icon {
@@ -50,16 +63,10 @@
   font-size: 1.5rem;
   color: #000000;
 }
-
-.footer {
-  background-color: #526375;
-  color: white;
-  text-align: center;
-  padding: 20px 0;
-}
 .content {
   margin-left: 250px; /* Adjust according to your sidebar width */
   padding: 20px;
+  font-family: "cursive";
 }
 
 .services {
