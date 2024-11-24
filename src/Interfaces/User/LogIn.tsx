@@ -2,13 +2,9 @@ import { Form, Input, Button, Space, message } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { loginUser } from "../../Services/UserService";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 
 const Login = () => {
   const navigate = useNavigate();
-
-  const [loginButtonHovered, setLoginButtonHovered] = useState(false);
-  const [forgotButtonHovered, setForgotButtonHovered] = useState(false);
 
   const onFinish = async (data: { username: string; password: string }) => {
     try {
@@ -18,18 +14,13 @@ const Login = () => {
       }
 
       const response = await loginUser(data.username, data.password);
-      if (response && response.token && response.roles && response.UserName) {
-        const { token, roles, UserName } = response;
+      if (response && response.token) {
+        const { token } = response;
 
         message.success("Logged in successfully!");
         localStorage.setItem("token", token);
 
-        if (Array.isArray(roles) && roles.length > 0) {
-          localStorage.setItem("role", roles[0]);
-        }
-        localStorage.setItem("userEmail", UserName);
-
-        navigate("/homeAuto");
+        navigate("/");
         window.location.reload();
       } else {
         message.error("Invalid response from server. Please try again.");

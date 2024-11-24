@@ -13,17 +13,7 @@ import {
   Typography,
   Box,
 } from "@mui/material";
-
-const getCryptoLogo = (name: string) => {
-  switch (name.toLowerCase()) {
-    case "bitcoin":
-      return "https://cryptologos.cc/logos/bitcoin-btc-logo.png";
-    case "ethereum":
-      return "https://cryptologos.cc/logos/ethereum-eth-logo.png";
-    default:
-      return "https://cryptologos.cc/logos/cryptocurrency-logo.png";
-  }
-};
+import CurrencyBitcoinIcon from "@mui/icons-material/CurrencyBitcoin";
 
 const CryptoList = () => {
   const [cryptoData, setCryptoData] = useState<Crypto[]>([]);
@@ -69,19 +59,20 @@ const CryptoList = () => {
     <div
       style={{
         padding: "20px",
-        backgroundColor: "#333",
+        height: "100%",
+        boxSizing: "border-box",
+        alignContent: "center",
         minHeight: "100vh",
-        width: "100%", // Full width of the page
+        width: "100%",
       }}
     >
-      {/* Centered Title */}
       <Box
         sx={{
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           marginBottom: "20px",
-          width: "100%", // Ensure title is centered on full width
+          width: "100%",
         }}
       >
         <Typography
@@ -89,17 +80,23 @@ const CryptoList = () => {
           component="h2"
           sx={{
             fontFamily: "cursive",
-            color: "#fff",
+            color: "#2e4053",
             textAlign: "center",
             fontWeight: "bold",
-            width: "100%", // Ensure the title takes full width
+            width: "100%",
           }}
         >
+          <CurrencyBitcoinIcon
+            sx={{
+              fontSize: "40px",
+              color: "#2e4053",
+              marginRight: "8px",
+            }}
+          />
           Most Recent Cryptocurrencies
         </Typography>
       </Box>
 
-      {/* Table */}
       <TableContainer component={Paper} sx={{ width: "100%" }}>
         <Table aria-label="cryptocurrency table" sx={{ width: "100%" }}>
           <TableHead>
@@ -115,7 +112,7 @@ const CryptoList = () => {
               <TableRow
                 key={crypto.id}
                 sx={{
-                  backgroundColor: index % 2 === 0 ? "#f5f5f5" : "#ffffff", // Alternating row colors
+                  backgroundColor: index % 2 === 0 ? "#f5f5f5" : "#ffffff",
                 }}
               >
                 <TableCell align="right">{crypto.name}</TableCell>
