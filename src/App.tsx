@@ -10,7 +10,7 @@ const { Content } = Layout;
 
 function App() {
   return (
-    <Layout style={{ minHeight: "100vh", width: "100%" }}>
+    <Layout>
       {" "}
       <Router>
         <NavBar />

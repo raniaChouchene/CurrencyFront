@@ -12,19 +12,23 @@ import {
   CircularProgress,
   Typography,
   Box,
+  TextField,
 } from "@mui/material";
 import CurrencyBitcoinIcon from "@mui/icons-material/CurrencyBitcoin";
 
 const CryptoList = () => {
   const [cryptoData, setCryptoData] = useState<Crypto[]>([]);
+  const [filteredCryptoData, setFilteredCryptoData] = useState<Crypto[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await fetchMostRecentCryptoData();
         setCryptoData(data);
+        setFilteredCryptoData(data); // Initialize filtered data
       } catch (err) {
         setError("Failed to fetch crypto data");
         console.error("Failed to fetch crypto data", err);
@@ -35,6 +39,13 @@ const CryptoList = () => {
 
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const filteredData = cryptoData.filter((crypto) =>
+      crypto.name.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredCryptoData(filteredData);
+  }, [searchQuery, cryptoData]);
 
   if (loading) {
     return (
@@ -72,6 +83,7 @@ const CryptoList = () => {
           alignItems: "center",
           justifyContent: "center",
           marginBottom: "20px",
+          flexDirection: "column",
           width: "100%",
         }}
       >
@@ -83,6 +95,7 @@ const CryptoList = () => {
             color: "#2e4053",
             textAlign: "center",
             fontWeight: "bold",
+            marginBottom: "20px",
             width: "100%",
           }}
         >
@@ -95,6 +108,20 @@ const CryptoList = () => {
           />
           Most Recent Cryptocurrencies
         </Typography>
+
+        {/* Search Field */}
+        <TextField
+          label="Search by Name"
+          variant="outlined"
+          fullWidth
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          sx={{
+            maxWidth: "400px",
+            width: "100%",
+            marginBottom: "20px",
+          }}
+        />
       </Box>
 
       <TableContainer component={Paper} sx={{ width: "100%" }}>
@@ -108,7 +135,7 @@ const CryptoList = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {cryptoData.map((crypto, index) => (
+            {filteredCryptoData.map((crypto, index) => (
               <TableRow
                 key={crypto.id}
                 sx={{
