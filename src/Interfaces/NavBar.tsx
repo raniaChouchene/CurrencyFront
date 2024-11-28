@@ -5,37 +5,23 @@ import {
   AppstoreAddOutlined,
   LineChartOutlined,
 } from "@ant-design/icons";
-import { useState } from "react";
 
 const { Sider } = Layout;
 
 const NavBar = () => {
-  const [hovered, setHovered] = useState(false);
-
-  const handleMouseEnter = () => {
-    setHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setHovered(false);
-  };
-
   return (
     <Sider
-      width={hovered ? 250 : 70}
+      width={250}
       style={{
         background: `url('https://m.foolcdn.com/media/dubs/images/original_imagesoriginal_imageshttpsg.foolcdn.c.width-880_SfbkM9V.jpg') repeat-y center top`, // Repeat image vertically
         backgroundSize: "cover",
         color: "#fff",
-
-        left: 0,
+        /*left: 0,
         top: 0,
         overflowY: "auto",
         height: "100vh",
-        zIndex: 1000,
+        zIndex: 1000,*/
       }}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
     >
       <div
         style={{
@@ -46,6 +32,7 @@ const NavBar = () => {
           height: "64px",
           cursor: "pointer",
           transition: "background-color 0.3s",
+          marginTop: "50px",
         }}
       >
         <img
@@ -69,7 +56,7 @@ const NavBar = () => {
           backgroundColor: "rgba(0, 0, 0, 0.5)",
           color: "#fff",
           borderRight: 0,
-          display: hovered ? "block" : "none",
+          display: "block",
         }}
       >
         <Menu.Item

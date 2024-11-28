@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Crypto } from "../Types/Currency";
 import { fetchMostRecentCryptoData } from "../Services/CurrencyService";
 import {

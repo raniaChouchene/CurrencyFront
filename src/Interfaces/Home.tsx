@@ -1,4 +1,3 @@
-import React from "react";
 import { Layout, Row, Col, Button, Typography, Card } from "antd";
 import {
   FundOutlined,
@@ -8,7 +7,7 @@ import {
 } from "@ant-design/icons";
 import "./Home.css";
 
-const { Content, Footer } = Layout;
+const { Content } = Layout;
 const { Title, Paragraph } = Typography;
 
 const services = [

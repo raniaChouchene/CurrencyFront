@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Card, Row, Col, Typography, Spin, Input, Layout } from "antd";
+import { useEffect, useState } from "react";
+import { Card, Row, Col, Typography, Spin, Input } from "antd";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -44,7 +44,6 @@ type GroupedCryptoData = {
 
 const { Title } = Typography;
 const { Search } = Input;
-const { Header, Content } = Layout;
 
 const CryptoChart = () => {
   const [cryptoData, setCryptoData] = useState<GroupedCryptoData[]>([]);
@@ -55,6 +54,7 @@ const CryptoChart = () => {
     const fetchCryptoData = async () => {
       try {
         const data = await fetchLast30CryptoPrices();
+        console.log(data);
         if (Array.isArray(data)) {
           setCryptoData(data);
         } else {
@@ -81,119 +81,113 @@ const CryptoChart = () => {
     return <div>No data available</div>;
   }
 
-  // Filter the crypto data based on the search term
   const filteredCryptoData = cryptoData.filter((crypto) =>
     crypto.name.toLowerCase().includes(searchTerm)
   );
 
   return (
-    <Layout>
-      <Header style={{ backgroundColor: "#001529", padding: "0 20px" }}>
+    <>
+      <div style={{ backgroundColor: "#001529", padding: "0 20px" }}>
         <Title level={3} style={{ color: "white", margin: 0 }}>
           Cryptocurrency Dashboard
         </Title>
-      </Header>
+      </div>
 
-      <Layout style={{ padding: "20px" }}>
-        {/* Search bar */}
-        <Content style={{ marginBottom: "20px" }}>
-          <Search
-            placeholder="Search cryptocurrency by name"
-            onSearch={handleSearch}
-            allowClear
-            style={{
-              width: "100%",
-              maxWidth: "600px",
-              margin: "0 auto",
-              display: "block",
-            }}
-          />
-        </Content>
-
-        {/* Crypto Chart Area */}
-        <Content>
-          <Row gutter={[16, 16]}>
-            {filteredCryptoData.map((crypto) => (
-              <Col span={12} key={crypto.name}>
-                <Card
-                  title={
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                      {crypto.name === "Bitcoin" && (
-                        <CiOutlined style={{ marginRight: 8 }} />
-                      )}
-                      {crypto.name === "Ethereum" && (
-                        <EnterOutlined style={{ marginRight: 8 }} />
-                      )}
-
-                      {crypto.name === "USDC" && (
-                        <DollarCircleOutlined style={{ marginRight: 8 }} />
-                      )}
-                      <Title level={4} style={{ margin: 0 }}>
-                        {crypto.name}
-                      </Title>
-                    </div>
-                  }
-                  extra={<CaretDownOutlined />}
-                  style={{ width: "100%", marginBottom: 16 }}
+      <Search
+        placeholder="Search cryptocurrency by name"
+        onSearch={handleSearch}
+        allowClear
+        style={{
+          width: "100%",
+          maxWidth: "600px",
+          margin: "0 auto",
+          display: "block",
+        }}
+      />
+      {filteredCryptoData.map((crypto) => (
+        <Row gutter={[16, 16]}>
+          <Col span={20} key={crypto.name}>
+            <Card
+              title={
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
                 >
-                  {crypto.data &&
-                  Array.isArray(crypto.data) &&
-                  crypto.data.length > 0 &&
-                  crypto.data.every(
-                    (entry) => entry.timestamp && entry.value
-                  ) ? (
-                    <Line
-                      data={{
-                        labels: crypto.data.map((entry) =>
-                          new Date(entry.timestamp).toLocaleTimeString()
-                        ),
-                        datasets: [
-                          {
-                            label: `${crypto.name} Price (USD)`,
-                            data: crypto.data.map((entry) => entry.value),
-                            borderColor: "rgba(75,192,192,1)",
-                            backgroundColor: "rgba(75,192,192,0.2)",
-                            tension: 0.4,
-                          },
-                        ],
-                      }}
-                      options={{
-                        responsive: true,
-                        plugins: {
-                          legend: {
-                            position: "top",
-                          },
-                          title: {
-                            display: true,
-                            text: `${crypto.name} Price Over Time`,
-                          },
-                        },
-                        scales: {
-                          x: {
-                            title: {
-                              display: true,
-                              text: "Time",
-                            },
-                          },
-                          y: {
-                            title: {
-                              display: true,
-                              text: "Price (USD)",
-                            },
-                          },
-                        },
-                      }}
-                    />
-                  ) : (
-                    <p>No data available</p>
+                  {crypto.name === "Bitcoin" && (
+                    <CiOutlined style={{ marginRight: 8 }} />
                   )}
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        </Content>
-      </Layout>
-    </Layout>
+                  {crypto.name === "Ethereum" && (
+                    <EnterOutlined style={{ marginRight: 8 }} />
+                  )}
+
+                  {crypto.name === "USDC" && (
+                    <DollarCircleOutlined style={{ marginRight: 8 }} />
+                  )}
+                  <Title level={4} style={{ margin: 0 }}>
+                    {crypto.name}
+                  </Title>
+                </div>
+              }
+              extra={<CaretDownOutlined />}
+              style={{ width: "100%", marginBottom: 16 }}
+            >
+              {crypto.data &&
+              Array.isArray(crypto.data) &&
+              crypto.data.length > 0 &&
+              crypto.data.every((entry) => entry.timestamp && entry.value) ? (
+                <Line
+                  data={{
+                    labels: crypto.data.map((entry) =>
+                      new Date(entry.timestamp).toISOString()
+                    ),
+                    datasets: [
+                      {
+                        label: `${crypto.name} Price (USD)`,
+                        data: crypto.data.map((entry) => entry.value),
+                        borderColor: "rgba(75,192,192,1)",
+                        backgroundColor: "rgba(75,192,192,0.2)",
+                        tension: 0.4,
+                      },
+                    ],
+                  }}
+                  options={{
+                    responsive: true,
+                    plugins: {
+                      legend: {
+                        position: "top",
+                      },
+                      title: {
+                        display: true,
+                        text: `${crypto.name} Price Over Time`,
+                      },
+                    },
+                    scales: {
+                      x: {
+                        title: {
+                          display: true,
+                          text: "Time",
+                        },
+                      },
+                      y: {
+                        title: {
+                          display: true,
+                          text: "Price (USD)",
+                        },
+                      },
+                    },
+                  }}
+                />
+              ) : (
+                <p>No data available</p>
+              )}
+            </Card>
+          </Col>
+        </Row>
+      ))}
+    </>
   );
 };
 

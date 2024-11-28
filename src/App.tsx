@@ -11,15 +11,15 @@ const { Content } = Layout;
 
 function App() {
   return (
-    <Layout>
-      {" "}
+    <Layout style={{ width: "100%", height: "100%" }}>
       <Router>
         <NavBar />
         <Content
           style={{
-            marginTop: "64px",
+            // marginTop: "64px",
             padding: "0",
             width: "100%",
+            height: "100%",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -58,9 +58,9 @@ const FullScreenWrapper = ({ component }: { component: React.ReactNode }) => (
     style={{
       width: "100%",
       height: "100%",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
+      // display: "flex",
+      // justifyContent: "center",
+      // alignItems: "center",
     }}
   >
     {component}
