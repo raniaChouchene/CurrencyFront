@@ -42,10 +42,8 @@ const Home = () => {
   return (
     <Layout>
       <Content className="content">
-        {/* "Trade the Future" Section */}
         <div className="trade-future">
           <Row gutter={[32, 32]} align="middle" style={{ margin: "10" }}>
-            {/* Left Section */}
             <Col
               xs={24}
               md={12}
@@ -67,7 +65,6 @@ const Home = () => {
           </Row>
         </div>
 
-        {/* Services Section */}
         <div className="services">
           <Row
             gutter={[16, 16]}
@@ -100,8 +97,6 @@ const Home = () => {
           </Row>
         </div>
       </Content>
-
-      <Footer className="footer"></Footer>
     </Layout>
   );
 };

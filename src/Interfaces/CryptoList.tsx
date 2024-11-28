@@ -28,7 +28,7 @@ const CryptoList = () => {
       try {
         const data = await fetchMostRecentCryptoData();
         setCryptoData(data);
-        setFilteredCryptoData(data); // Initialize filtered data
+        setFilteredCryptoData(data);
       } catch (err) {
         setError("Failed to fetch crypto data");
         console.error("Failed to fetch crypto data", err);
@@ -109,7 +109,6 @@ const CryptoList = () => {
           Most Recent Cryptocurrencies
         </Typography>
 
-        {/* Search Field */}
         <TextField
           label="Search by Name"
           variant="outlined"

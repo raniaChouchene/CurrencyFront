@@ -97,13 +97,25 @@ const NavBar = () => {
         </Menu.Item>
 
         <Menu.Item
-          key="currencyChart"
+          key="currencyList"
           icon={<LineChartOutlined style={{ color: "#fff" }} />}
           style={{
             backgroundColor: "rgba(0, 0, 0, 0.6)",
           }}
         >
           <Link to="/CryptoList" style={{ color: "#fff" }}>
+            Currency List
+          </Link>
+        </Menu.Item>
+
+        <Menu.Item
+          key="currencyChart"
+          icon={<LineChartOutlined style={{ color: "#fff" }} />}
+          style={{
+            backgroundColor: "rgba(0, 0, 0, 0.6)",
+          }}
+        >
+          <Link to="/cryptoCharts" style={{ color: "#fff" }}>
             Currency Chart
           </Link>
         </Menu.Item>
