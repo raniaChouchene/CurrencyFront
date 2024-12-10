@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Card, Row, Col, Typography, Spin, Input } from "antd";
+import { Card, Row, Col, Typography, Spin, Input, Button } from "antd";
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -11,7 +11,10 @@ import {
   PointElement,
 } from "chart.js";
 
-import { fetchLast30CryptoPrices } from "../Services/CurrencyService";
+import {
+  fetchLast30CryptoPrices,
+  fetchHistoricalCryptoData,
+} from "../Services/CurrencyService"; // Import updated service
 import {
   CaretDownOutlined,
   CiOutlined,
@@ -28,6 +31,9 @@ ChartJS.register(
   PointElement
 );
 
+const { Title } = Typography;
+const { Search } = Input;
+
 export type Crypto = {
   id: string;
   name: string;
@@ -42,13 +48,11 @@ type GroupedCryptoData = {
   data: { timestamp: string; value: number }[];
 };
 
-const { Title } = Typography;
-const { Search } = Input;
-
 const CryptoChart = () => {
   const [cryptoData, setCryptoData] = useState<GroupedCryptoData[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedPeriod, setSelectedPeriod] = useState<string>("month");
 
   useEffect(() => {
     const fetchCryptoData = async () => {
@@ -63,6 +67,7 @@ const CryptoChart = () => {
         setLoading(false);
       } catch (error) {
         console.error("Error fetching crypto data:", error);
+        setLoading(false);
       }
     };
 
@@ -71,6 +76,28 @@ const CryptoChart = () => {
 
   const handleSearch = (value: string) => {
     setSearchTerm(value.toLowerCase());
+  };
+
+  const handlePeriodChange = async (cryptoName: string, period: string) => {
+    setLoading(true);
+    setSelectedPeriod(period);
+
+    try {
+      const data = await fetchHistoricalCryptoData(cryptoName, period);
+      console.log(data);
+
+      if (Array.isArray(data) && data.length > 0) {
+        // Limit data to the last 30 values
+        const limitedData = data.slice(0, 30);
+        setCryptoData([{ name: cryptoName, data: limitedData }]);
+      } else {
+        console.error("Invalid or empty data received");
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching historical crypto data:", error);
+      setLoading(false);
+    }
   };
 
   if (loading) {
@@ -104,9 +131,10 @@ const CryptoChart = () => {
           display: "block",
         }}
       />
+
       {filteredCryptoData.map((crypto) => (
-        <Row gutter={[16, 16]}>
-          <Col span={20} key={crypto.name}>
+        <Row gutter={[16, 16]} key={crypto.name}>
+          <Col span={20}>
             <Card
               title={
                 <div
@@ -122,7 +150,6 @@ const CryptoChart = () => {
                   {crypto.name === "Ethereum" && (
                     <EnterOutlined style={{ marginRight: 8 }} />
                   )}
-
                   {crypto.name === "USDC" && (
                     <DollarCircleOutlined style={{ marginRight: 8 }} />
                   )}
@@ -183,6 +210,22 @@ const CryptoChart = () => {
               ) : (
                 <p>No data available</p>
               )}
+              {/* Buttons for selecting the period */}
+              <div style={{ marginTop: 16, textAlign: "center" }}>
+                <Button
+                  type={selectedPeriod === "month" ? "primary" : "default"}
+                  onClick={() => handlePeriodChange(crypto.name, "month")}
+                  style={{ marginRight: 8 }}
+                >
+                  Last Month
+                </Button>
+                <Button
+                  type={selectedPeriod === "year" ? "primary" : "default"}
+                  onClick={() => handlePeriodChange(crypto.name, "year")}
+                >
+                  Last Year
+                </Button>
+              </div>
             </Card>
           </Col>
         </Row>

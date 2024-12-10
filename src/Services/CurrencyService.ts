@@ -25,3 +25,25 @@ export const fetchLast30CryptoPrices = async () => {
     throw error;
   }
 };
+
+export const fetchHistoricalCryptoData = async (
+  currencyName: string,
+  period: string
+) => {
+  try {
+    const response = await axios.get(
+      `${endpoint}/cryptocurrencies/historical-data`,
+      {
+        params: {
+          currencyName: currencyName,
+          period: period,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching historical crypto data:", error);
+    throw error;
+  }
+};
