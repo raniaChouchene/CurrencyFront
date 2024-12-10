@@ -58,7 +58,7 @@ const CryptoChart = () => {
     const fetchCryptoData = async () => {
       try {
         const data = await fetchLast30CryptoPrices();
-        console.log(data);
+        console.log(data); // Log the data to verify its structure
         if (Array.isArray(data)) {
           setCryptoData(data);
         } else {
@@ -84,10 +84,9 @@ const CryptoChart = () => {
 
     try {
       const data = await fetchHistoricalCryptoData(cryptoName, period);
-      console.log(data);
+      console.log(data); // Log the data to verify its structure
 
       if (Array.isArray(data) && data.length > 0) {
-        // Limit data to the last 30 values
         const limitedData = data.slice(0, 30);
         setCryptoData([{ name: cryptoName, data: limitedData }]);
       } else {
@@ -163,8 +162,7 @@ const CryptoChart = () => {
             >
               {crypto.data &&
               Array.isArray(crypto.data) &&
-              crypto.data.length > 0 &&
-              crypto.data.every((entry) => entry.timestamp && entry.value) ? (
+              crypto.data.length > 0 ? (
                 <Line
                   data={{
                     labels: crypto.data.map((entry) =>
@@ -210,7 +208,6 @@ const CryptoChart = () => {
               ) : (
                 <p>No data available</p>
               )}
-              {/* Buttons for selecting the period */}
               <div style={{ marginTop: 16, textAlign: "center" }}>
                 <Button
                   type={selectedPeriod === "month" ? "primary" : "default"}
