@@ -1,47 +1,20 @@
 import { useEffect, useState } from "react";
 import { Card, Row, Col, Typography, Spin, Input, Button } from "antd";
-import { Line } from "react-chartjs-2";
-import {
-  Chart as ChartJS,
-  Tooltip,
-  Legend,
-  LineElement,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-} from "chart.js";
-
-import {
-  fetchLast30CryptoPrices,
-  fetchHistoricalCryptoData,
-} from "../Services/CurrencyService"; // Import updated service
 import {
   CaretDownOutlined,
   CiOutlined,
   DollarCircleOutlined,
   EnterOutlined,
 } from "@ant-design/icons";
-
-ChartJS.register(
-  Tooltip,
-  Legend,
-  LineElement,
-  CategoryScale,
-  LinearScale,
-  PointElement
-);
+import {
+  fetchLast30CryptoPrices,
+  fetchHistoricalCryptoData,
+} from "../Services/CurrencyService";
+import ChartModal from "./ChartModal";
+import { Line } from "react-chartjs-2";
 
 const { Title } = Typography;
 const { Search } = Input;
-
-export type Crypto = {
-  id: string;
-  name: string;
-  price: number;
-  volume: number;
-  marketCap: number;
-  timestamp: string;
-};
 
 type GroupedCryptoData = {
   name: string;
@@ -53,12 +26,17 @@ const CryptoChart = () => {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedPeriod, setSelectedPeriod] = useState<string>("month");
+  const [modalVisible, setModalVisible] = useState(false);
+  const [currentCryptoData, setCurrentCryptoData] = useState<
+    { timestamp: string; value: number }[] | null
+  >(null);
+  const [currentCryptoName, setCurrentCryptoName] = useState("");
 
   useEffect(() => {
     const fetchCryptoData = async () => {
       try {
         const data = await fetchLast30CryptoPrices();
-        console.log(data); // Log the data to verify its structure
+        console.log(data);
         if (Array.isArray(data)) {
           setCryptoData(data);
         } else {
@@ -84,11 +62,12 @@ const CryptoChart = () => {
 
     try {
       const data = await fetchHistoricalCryptoData(cryptoName, period);
-      console.log(data); // Log the data to verify its structure
-
+      console.log(data);
       if (Array.isArray(data) && data.length > 0) {
         const limitedData = data.slice(0, 30);
-        setCryptoData([{ name: cryptoName, data: limitedData }]);
+        setCurrentCryptoData(limitedData);
+        setCurrentCryptoName(cryptoName);
+        setModalVisible(true);
       } else {
         console.error("Invalid or empty data received");
       }
@@ -97,6 +76,13 @@ const CryptoChart = () => {
       console.error("Error fetching historical crypto data:", error);
       setLoading(false);
     }
+  };
+
+  const handleModalClose = () => {
+    console.log("Closing modal...");
+    setModalVisible(false);
+    setCurrentCryptoData(null);
+    setCurrentCryptoName("");
   };
 
   if (loading) {
@@ -166,7 +152,7 @@ const CryptoChart = () => {
                 <Line
                   data={{
                     labels: crypto.data.map((entry) =>
-                      new Date(entry.timestamp).toISOString()
+                      new Date(entry.timestamp).toLocaleDateString()
                     ),
                     datasets: [
                       {
@@ -227,6 +213,13 @@ const CryptoChart = () => {
           </Col>
         </Row>
       ))}
+
+      <ChartModal
+        visible={modalVisible}
+        onClose={handleModalClose}
+        cryptoData={currentCryptoData || []}
+        cryptoName={currentCryptoName}
+      />
     </>
   );
 };
