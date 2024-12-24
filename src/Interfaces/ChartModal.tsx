@@ -9,6 +9,7 @@ import {
   LinearScale,
   PointElement,
 } from "chart.js";
+import { useState, useEffect } from "react";
 
 // Register chart.js components
 ChartJS.register(
@@ -33,25 +34,51 @@ const ChartModal = ({
   cryptoData,
   cryptoName,
 }: ChartModalProps) => {
-  // Format timestamps and values for the chart
-  const formattedData = cryptoData.map((entry) => ({
-    formattedTimestamp: new Date(entry.timestamp).toLocaleDateString(),
-    value: entry.value,
-  }));
-
-  // Prepare chart data and labels
-  const chartData = {
-    labels: formattedData.map((entry) => entry.formattedTimestamp),
+  const [chartData, setChartData] = useState({
+    labels: [],
     datasets: [
       {
         label: `${cryptoName} Price (USD)`,
-        data: formattedData.map((entry) => entry.value),
+        data: [],
         borderColor: "rgba(75,192,192,1)",
         backgroundColor: "rgba(75,192,192,0.2)",
         tension: 0.4,
       },
     ],
-  };
+  });
+
+  useEffect(() => {
+    if (cryptoData.length > 0) {
+      const formattedData = cryptoData.map((entry) => {
+        const date = new Date(entry.timestamp);
+        const formattedTimestamp = `${date.getFullYear()}-${(
+          date.getMonth() + 1
+        )
+          .toString()
+          .padStart(2, "0")}`;
+        return {
+          formattedTimestamp,
+          value: entry.value,
+        };
+      });
+
+      setChartData({
+        //@ts-expect-error
+        labels: formattedData.map((entry) => entry.formattedTimestamp),
+        datasets: [
+          {
+            label: `${cryptoName} Price (USD)`,
+            //@ts-expect-error
+            data: formattedData.map((entry) => entry.value),
+
+            borderColor: "rgba(75,192,192,1)",
+            backgroundColor: "rgba(75,192,192,0.2)",
+            tension: 0.4,
+          },
+        ],
+      });
+    }
+  }, [cryptoData, cryptoName]);
 
   return (
     <Modal
@@ -76,6 +103,7 @@ const ChartModal = ({
           },
           scales: {
             x: {
+              type: "category",
               title: {
                 display: true,
                 text: "Time",

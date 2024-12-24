@@ -16,6 +16,7 @@ const NavBar = () => {
         background: `url('https://m.foolcdn.com/media/dubs/images/original_imagesoriginal_imageshttpsg.foolcdn.c.width-880_SfbkM9V.jpg') repeat-y center top`, // Repeat image vertically
         backgroundSize: "cover",
         color: "#fff",
+
         /*left: 0,
         top: 0,
         overflowY: "auto",
@@ -67,19 +68,7 @@ const NavBar = () => {
           }}
         >
           <Link to="/login" style={{ color: "#fff" }}>
-            Log In
-          </Link>
-        </Menu.Item>
-
-        <Menu.Item
-          key="createAccount"
-          icon={<AppstoreAddOutlined style={{ color: "#fff" }} />}
-          style={{
-            backgroundColor: "rgba(0, 0, 0, 0.6)",
-          }}
-        >
-          <Link to="/register" style={{ color: "#fff" }}>
-            Create Account
+            Log In / Sign Up
           </Link>
         </Menu.Item>
 

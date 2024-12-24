@@ -153,11 +153,31 @@ const CreateAccount = () => {
                   width: "100%",
                   textAlign: "center",
                   fontSize: "16px",
-                  color: "#ff4500",
+                  fontWeight: "bold",
+                  color: "#ffffff",
+                  background: "linear-gradient(90deg, #ff4500, #ff7043)",
+                  padding: "12px 20px",
+                  borderRadius: "8px",
+                  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                  transition: "all 0.3s ease-in-out",
                 }}
                 onClick={() => navigate("/login")}
+                onMouseOver={(e) => {
+                  //@ts-expect-error
+                  e.target.style.background =
+                    "linear-gradient(90deg, #ff7043, #ff4500)";
+                  //@ts-expect-error
+                  e.target.style.transform = "scale(1.05)";
+                }}
+                onMouseOut={(e) => {
+                  //@ts-expect-error
+                  e.target.style.background =
+                    "linear-gradient(90deg, #ff4500, #ff7043)";
+                  //@ts-expect-error
+                  e.target.style.transform = "scale(1)";
+                }}
               >
-                Already have an account? Login
+                Create Account
               </Button>
             </Form.Item>
           </Space>

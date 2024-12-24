@@ -1,82 +1,109 @@
-.hero {
-  background: #979e80;
-  color: #fff;
-  padding: 60px 0;
-  text-align: left; /* Align text to the left */
-  font-family: "cursive";
-}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
 
-.hero-title {
-  font-size: 3rem;
-  margin-bottom: 20px;
-  font-family: "cursive";
-  margin-top: 16px;
-  max-width: none; /* Remove width limitation */
-  text-align: left; /* Ensure text is left-aligned */
-}
-
-.hero-text {
-  font-size: 1.25rem;
-  margin-bottom: 30px;
-  font-family: "cursive";
-  text-align: left; /* Ensure text is left-aligned */
-}
-
-.cta-button {
-  background-color: #522a2e;
-  border: none;
-  padding: 15px 30px;
-  font-size: 1rem;
-  font-family: "cursive";
-  text-align: left; /* Align the button to the left */
-}
-.services {
-  background-color: #f0f2f5;
-  padding: 50px 0;
-  font-family: "cursive";
-}
-
-.services-title {
-  text-align: center;
-  font-size: 2rem;
-  margin-bottom: 40px;
-
-  font-family: "cursive";
-}
-
-.service-card {
-  border-radius: 20px; /* More rounded corners */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background-color: #ffffff;
-}
-
-.card-title {
+  color: white;
   display: flex;
+  justify-content: center;
   align-items: center;
-  font-size: 1.25rem;
-
-  font-family: "cursive";
+  min-height: 100vh;
+  width: 100%;
+  background-color: #233067;
 }
 
-.card-icon {
-  margin-right: 10px;
-  font-size: 1.5rem;
-  color: #000000;
+.txs-home {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1200px;
+  width: 100%;
 }
-.content {
-  margin-left: 250px; /* Adjust according to your sidebar width */
+
+.presentation {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
   padding: 20px;
-  font-family: "cursive";
+  color: #233067;
+}
+
+.content {
+  color: #233067;
+  flex: 1;
+  padding: 20px;
+}
+
+.content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #233067;
+}
+
+.content p {
+  color: #233067;
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.download-btn {
+  display: inline-block;
+  background-color: #1c3148;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.phone-mockup {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 500px;
+}
+
+.phone-mockup img {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .services {
-  margin-left: 0;
-  padding-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  width: 100%;
+  padding: 20px;
+  margin-top: 20px;
 }
 
-.service-card {
-  margin-top: 16px;
-  max-width: 350px;
-  margin-left: auto;
-  margin-right: 0;
+.service-box {
+  background-color: #1c3148;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.service-box h3 {
+  font-size: 1.5rem;
+  margin: 10px 0;
+}
+
+.service-box p {
+  font-size: 1rem;
+  color: #d1e8ff;
+}
+
+.service-icon {
+  font-size: 3rem;
+  color: #e6e6e6;
+  margin-bottom: 15px;
 }

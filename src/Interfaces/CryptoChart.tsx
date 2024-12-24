@@ -64,7 +64,7 @@ const CryptoChart = () => {
       const data = await fetchHistoricalCryptoData(cryptoName, period);
       console.log(data);
       if (Array.isArray(data) && data.length > 0) {
-        const limitedData = data.slice(0, 30);
+        const limitedData = period === "month" ? data.slice(0, 30) : data;
         setCurrentCryptoData(limitedData);
         setCurrentCryptoName(cryptoName);
         setModalVisible(true);

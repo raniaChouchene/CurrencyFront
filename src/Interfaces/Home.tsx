@@ -1,103 +1,84 @@
-import { Layout, Row, Col, Button, Typography, Card } from "antd";
-import {
-  FundOutlined,
-  AreaChartOutlined,
-  WalletOutlined,
-  BellOutlined,
-} from "@ant-design/icons";
 import "./Home.css";
+import phoneMockup from "./../assets/phone.png";
+import {
+  FaChartLine,
+  FaClock,
+  FaBell,
+  FaEnvelope,
+  FaList,
+  FaLightbulb,
+  FaChartPie,
+} from "react-icons/fa";
 
-const { Content } = Layout;
-const { Title, Paragraph } = Typography;
-
-const services = [
-  {
-    title: "Real-Time Cryptocurrency Prices",
-    description:
-      "Stay updated with live cryptocurrency prices and changes. Make informed investment decisions with precise data.",
-    icon: <FundOutlined />,
-  },
-  {
-    title: "Market Analysis",
-    description:
-      "Get insights into market trends with detailed charts and analytics. Monitor market movements effectively.",
-    icon: <AreaChartOutlined />,
-  },
-  {
-    title: "Portfolio Management",
-    description:
-      "Organize and track your cryptocurrency holdings in one place. Analyze your investments with ease.",
-    icon: <WalletOutlined />,
-  },
-  {
-    title: "Custom Alerts & Notifications",
-    description:
-      "Set personalized alerts for price changes, market trends, or specific cryptocurrency updates.",
-    icon: <BellOutlined />,
-  },
-];
-
-const Home = () => {
+function Home() {
   return (
-    <Layout>
-      <Content className="content">
-        <div className="trade-future">
-          <Row gutter={[32, 32]} align="middle" style={{ margin: "10" }}>
-            <Col
-              xs={24}
-              md={12}
-              className="trade-text"
-              style={{ marginTop: "40px", paddingLeft: "16px" }}
-            >
-              <Title level={1} className="hero-title">
-                Trade the future
-              </Title>
-              <Paragraph className="hero-text">
-                Your one-stop platform for cryptocurrency tracking, market
-                analysis, and portfolio management. Empowering your investments
-                with cutting-edge tools and real-time updates.
-              </Paragraph>
-              <Button type="primary" size="large" className="cta-button">
-                Ouvrez un compte →
-              </Button>
-            </Col>
-          </Row>
+    <div className="txs-home">
+      <div className="presentation">
+        <div className="content">
+          <h1>Gérez vos cryptomonnaies avec notre plateforme avancée</h1>
+          <p>
+            Découvrez des outils puissants pour analyser, prévoir et recevoir
+            des alertes personnalisées. Tout ce dont vous avez besoin pour
+            rester informé et réagir rapidement aux évolutions du marché.
+          </p>
+          <a href="#" className="download-btn">
+            Commencez dès maintenant
+          </a>
         </div>
-
-        <div className="services">
-          <Row
-            gutter={[16, 16]}
-            justify="start"
-            style={{ marginTop: "40px", paddingLeft: "16px" }}
-          >
-            {services.map((service, index) => (
-              <Col key={index} xs={24} sm={24} md={12} lg={8}>
-                <Card
-                  title={
-                    <div className="card-title">
-                      <span className="card-icon">{service.icon}</span>
-                      {service.title}
-                    </div>
-                  }
-                  bordered={false}
-                  className="service-card"
-                  bodyStyle={{ padding: "16px", backgroundColor: "#f7f7f7" }}
-                  style={{
-                    borderRadius: "20px",
-                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-                    marginTop: "16px",
-                    maxWidth: "350px",
-                  }}
-                >
-                  <p>{service.description}</p>
-                </Card>
-              </Col>
-            ))}
-          </Row>
+        <div className="phone-mockup">
+          <img src={phoneMockup} alt="Phone Mockup" />
         </div>
-      </Content>
-    </Layout>
+      </div>
+      <div className="services">
+        <div className="service-box">
+          <FaChartLine className="service-icon" />
+          <h3>Analyse et visualisation</h3>
+          <p>
+            Visualisez l'évolution des prix des cryptomonnaies sous forme de
+            courbes.
+          </p>
+        </div>
+        <div className="service-box">
+          <FaClock className="service-icon" />
+          <h3>Plages de temps</h3>
+          <p>Sélectionnez des plages spécifiques (1 mois, 1 semaine, etc.).</p>
+        </div>
+        <div className="service-box">
+          <FaBell className="service-icon" />
+          <h3>Alertes personnalisées</h3>
+          <p>
+            Configurez des alertes pour des prix supérieurs ou inférieurs à vos
+            seuils.
+          </p>
+        </div>
+        <div className="service-box">
+          <FaEnvelope className="service-icon" />
+          <h3>Alertes par email</h3>
+          <p>Recevez des notifications directement dans votre boîte email.</p>
+        </div>
+        <div className="service-box">
+          <FaList className="service-icon" />
+          <h3>Liste des alertes</h3>
+          <p>
+            Consultez et gérez toutes les alertes que vous avez configurées.
+          </p>
+        </div>
+        <div className="service-box">
+          <FaLightbulb className="service-icon" />
+          <h3>Prévision des tendances</h3>
+          <p>Sélectionnez des modèles pour prédire les tendances du marché.</p>
+        </div>
+        <div className="service-box">
+          <FaChartPie className="service-icon" />
+          <h3>Graphiques interactifs</h3>
+          <p>
+            Visualisez vos prévisions directement sur des graphiques
+            interactifs.
+          </p>
+        </div>
+      </div>
+    </div>
   );
-};
+}
 
 export default Home;
