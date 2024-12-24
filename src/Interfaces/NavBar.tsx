@@ -1,14 +1,31 @@
+import React, { useState, useEffect } from "react";
 import { Layout, Menu } from "antd";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   LoginOutlined,
-  AppstoreAddOutlined,
   LineChartOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons";
 
 const { Sider } = Layout;
 
 const NavBar = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  const handleLogOut = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    navigate("/login");
+  };
+
   return (
     <Sider
       width={250}
@@ -16,12 +33,6 @@ const NavBar = () => {
         background: `url('https://m.foolcdn.com/media/dubs/images/original_imagesoriginal_imageshttpsg.foolcdn.c.width-880_SfbkM9V.jpg') repeat-y center top`, // Repeat image vertically
         backgroundSize: "cover",
         color: "#fff",
-
-        /*left: 0,
-        top: 0,
-        overflowY: "auto",
-        height: "100vh",
-        zIndex: 1000,*/
       }}
     >
       <div
@@ -60,17 +71,19 @@ const NavBar = () => {
           display: "block",
         }}
       >
-        <Menu.Item
-          key="login"
-          icon={<LoginOutlined style={{ color: "#fff" }} />}
-          style={{
-            backgroundColor: "rgba(0, 0, 0, 0.6)",
-          }}
-        >
-          <Link to="/login" style={{ color: "#fff" }}>
-            Log In / Sign Up
-          </Link>
-        </Menu.Item>
+        {!isLoggedIn && (
+          <Menu.Item
+            key="login"
+            icon={<LoginOutlined style={{ color: "#fff" }} />}
+            style={{
+              backgroundColor: "rgba(0, 0, 0, 0.6)",
+            }}
+          >
+            <Link to="/login" style={{ color: "#fff" }}>
+              Log In / Sign Up
+            </Link>
+          </Menu.Item>
+        )}
 
         <Menu.Item
           key="currencyList"
@@ -95,6 +108,23 @@ const NavBar = () => {
             Currency Chart
           </Link>
         </Menu.Item>
+
+        {isLoggedIn && (
+          <Menu.Item
+            key="LogOut"
+            icon={<LogoutOutlined style={{ color: "#fff" }} />}
+            style={{
+              backgroundColor: "rgba(0, 0, 0, 0.6)",
+              position: "absolute",
+              bottom: "20px",
+              width: "100%",
+              color: "#fff",
+            }}
+            onClick={handleLogOut}
+          >
+            Log Out
+          </Menu.Item>
+        )}
       </Menu>
     </Sider>
   );
