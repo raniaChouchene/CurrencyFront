@@ -64,7 +64,7 @@ const CreateAccount = () => {
             <div
               style={{
                 fontSize: "50px",
-                color: "#924f49",
+                color: "#ff4500",
                 textAlign: "center",
               }}
             >
@@ -177,7 +177,7 @@ const CreateAccount = () => {
                   e.target.style.transform = "scale(1)";
                 }}
               >
-                Create Account
+                Already have an Account ?
               </Button>
             </Form.Item>
           </Space>

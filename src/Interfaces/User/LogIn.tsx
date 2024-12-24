@@ -59,7 +59,7 @@ const Login = () => {
             <div
               style={{
                 fontSize: "50px",
-                color: "#924f49",
+                color: "#233067",
                 textAlign: "center",
               }}
             >

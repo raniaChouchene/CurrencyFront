@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { Crypto } from "../Types/Currency";
-import { fetchMostRecentCryptoData } from "../Services/CurrencyService";
+import {
+  fetchMostRecentCryptoData,
+  handleSetAlerts,
+} from "../Services/CurrencyService";
 import {
   Table,
   TableBody,
@@ -13,6 +16,15 @@ import {
   Typography,
   Box,
   TextField,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField as MuiTextField,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import CurrencyBitcoinIcon from "@mui/icons-material/CurrencyBitcoin";
 
@@ -22,7 +34,11 @@ const CryptoList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-
+  const [open, setOpen] = useState(false);
+  const [selectedCrypto, setSelectedCrypto] = useState<Crypto | null>(null);
+  const [threshold, setThreshold] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [thresholdType, setThresholdType] = useState("");
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -37,6 +53,11 @@ const CryptoList = () => {
       }
     };
 
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsLoggedIn(true);
+    }
+
     fetchData();
   }, []);
 
@@ -46,6 +67,32 @@ const CryptoList = () => {
     );
     setFilteredCryptoData(filteredData);
   }, [searchQuery, cryptoData]);
+
+  const handleOpenDialog = (crypto: Crypto) => {
+    setSelectedCrypto(crypto);
+    setOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpen(false);
+    setThreshold("");
+    setSelectedCrypto(null);
+  };
+
+  const handleSetAlert = () => {
+    if (selectedCrypto && threshold && thresholdType) {
+      try {
+        handleSetAlerts(selectedCrypto.id, Number(threshold), thresholdType);
+      } catch (error) {
+        console.error("Error setting alert:", error);
+      }
+      console.log(
+        `Alert configured for ${selectedCrypto.name} at price: ${threshold} ant type: ${thresholdType}`
+      );
+
+      handleCloseDialog();
+    }
+  };
 
   if (loading) {
     return (
@@ -131,6 +178,8 @@ const CryptoList = () => {
               <TableCell align="right">Price</TableCell>
               <TableCell align="right">Volume</TableCell>
               <TableCell align="right">Market Cap</TableCell>
+              {isLoggedIn && <TableCell align="right">Actions</TableCell>}{" "}
+              {/* Only show if logged in */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -149,11 +198,62 @@ const CryptoList = () => {
                 <TableCell align="right">
                   ${crypto.marketCap.toLocaleString()}
                 </TableCell>
+                <TableCell align="right">
+                  {isLoggedIn && (
+                    <Button
+                      variant="contained"
+                      style={{ backgroundColor: "#2e4053", color: "white" }}
+                      onClick={() => handleOpenDialog(crypto)}
+                    >
+                      Set Alert
+                    </Button>
+                  )}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
+
+      <Dialog open={open} onClose={handleCloseDialog}>
+        <DialogTitle>Set Price Alert</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Set an alert for {selectedCrypto?.name}. You will be notified when
+            the price falls below your threshold.
+          </DialogContentText>
+          <Select
+            defaultValue="Above"
+            value={thresholdType}
+            onChange={(e) => setThresholdType(e.target.value)}
+          >
+            <MenuItem value="below">Below</MenuItem>
+            <MenuItem value="above">Above</MenuItem>
+          </Select>
+          <MuiTextField
+            autoFocus
+            margin="dense"
+            label="Price Threshold (USD)"
+            type="number"
+            fullWidth
+            value={threshold}
+            onChange={(e) => setThreshold(e.target.value)}
+          />
+        </DialogContent>
+
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="secondary">
+            Cancel
+          </Button>
+          <Button
+            onClick={handleSetAlert}
+            style={{ backgroundColor: "#2e4053", color: "white" }}
+            disabled={!isLoggedIn}
+          >
+            Set Alert
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

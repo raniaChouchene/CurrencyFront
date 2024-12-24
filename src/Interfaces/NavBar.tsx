@@ -51,6 +51,7 @@ const NavBar = () => {
           src="https://m.foolcdn.com/media/dubs/images/original_imagesoriginal_imageshttpsg.foolcdn.c.width-880_SfbkM9V.jpg"
           alt="Cryptocurrency Image"
           style={{ width: "40px", height: "40px", borderRadius: "50%" }}
+          onClick={() => navigate("/")}
         />
       </div>
       <div
@@ -59,6 +60,7 @@ const NavBar = () => {
           backgroundColor: "#ccc",
           margin: "0 24px",
         }}
+        onClick={() => navigate("/")}
       />
 
       <Menu

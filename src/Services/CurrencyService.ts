@@ -47,3 +47,20 @@ export const fetchHistoricalCryptoData = async (
     throw error;
   }
 };
+export const handleSetAlerts = async (
+  selectedCryptoId: string,
+  threshold: number,
+  thresholdType: string
+) => {
+  try {
+    const response = await axios.post(`${endpoint}/cryptocurrencies/alerts`, {
+      cryptoId: selectedCryptoId,
+      threshold,
+      thresholdType,
+    });
+    alert("Alert set successfully!");
+  } catch (error) {
+    console.error("Error setting alert:", error);
+    alert("Failed to set alert");
+  }
+};
