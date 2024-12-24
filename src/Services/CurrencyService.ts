@@ -52,15 +52,51 @@ export const handleSetAlerts = async (
   threshold: number,
   thresholdType: string
 ) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    alert("You must be logged in to set an alert.");
+    return;
+  }
+
   try {
-    const response = await axios.post(`${endpoint}/cryptocurrencies/alerts`, {
-      cryptoId: selectedCryptoId,
-      threshold,
-      thresholdType,
-    });
+    const response = await axios.post(
+      `${endpoint}/cryptocurrencies/alerts`,
+      {
+        cryptoId: selectedCryptoId,
+        threshold,
+        thresholdType,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     alert("Alert set successfully!");
   } catch (error) {
     console.error("Error setting alert:", error);
     alert("Failed to set alert");
+  }
+};
+export const fetchAlertHistory = async () => {
+  const token = localStorage.getItem("token"); // Retrieve the token from localStorage
+
+  if (!token) {
+    alert("You must be logged in to view your alert history.");
+    return;
+  }
+
+  try {
+    const response = await axios.get(`${endpoint}/cryptocurrencies/history`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch alert history", error);
+    alert("Failed to fetch alert history");
   }
 };

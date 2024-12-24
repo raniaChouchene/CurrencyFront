@@ -5,6 +5,7 @@ import {
   LoginOutlined,
   LineChartOutlined,
   LogoutOutlined,
+  HistoryOutlined,
 } from "@ant-design/icons";
 
 const { Sider } = Layout;
@@ -83,6 +84,19 @@ const NavBar = () => {
           >
             <Link to="/login" style={{ color: "#fff" }}>
               Log In / Sign Up
+            </Link>
+          </Menu.Item>
+        )}
+        {isLoggedIn && (
+          <Menu.Item
+            key="History"
+            icon={<HistoryOutlined style={{ color: "#fff" }} />}
+            style={{
+              backgroundColor: "rgba(0, 0, 0, 0.6)",
+            }}
+          >
+            <Link to="/AlertHistory" style={{ color: "#fff" }}>
+              Alert History
             </Link>
           </Menu.Item>
         )}
