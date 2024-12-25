@@ -26,7 +26,10 @@ const CryptoChart = () => {
   const [cryptoData, setCryptoData] = useState<GroupedCryptoData[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState(""); // Store search term
-  const [selectedPeriod, setSelectedPeriod] = useState<string>("month");
+  const [selectedPeriod, setSelectedPeriod] = useState<"month" | "week">(
+    "month"
+  );
+
   const [modalVisible, setModalVisible] = useState(false);
   const [currentCryptoData, setCurrentCryptoData] = useState<
     { timestamp: string; value: number }[] | null
@@ -54,10 +57,13 @@ const CryptoChart = () => {
   }, []);
 
   const handleSearch = (value: string) => {
-    setSearchTerm(value.toLowerCase()); // Update search term
+    setSearchTerm(value.toLowerCase());
   };
 
-  const handlePeriodChange = async (cryptoName: string, period: string) => {
+  const handlePeriodChange = async (
+    cryptoName: string,
+    period: "month" | "week"
+  ) => {
     setLoading(true);
     setSelectedPeriod(period);
 
@@ -230,7 +236,7 @@ const CryptoChart = () => {
                             },
                           },
                         }}
-                        height={200} // Reduce chart size
+                        height={200}
                       />
                     ) : (
                       <p>No data available</p>
@@ -246,10 +252,10 @@ const CryptoChart = () => {
                         Last Month
                       </Button>
                       <Button
-                        type={selectedPeriod === "year" ? "primary" : "default"}
-                        onClick={() => handlePeriodChange(crypto.name, "year")}
+                        type={selectedPeriod === "week" ? "primary" : "default"}
+                        onClick={() => handlePeriodChange(crypto.name, "week")}
                       >
-                        Last Year
+                        Last week
                       </Button>
                     </div>
                   </Card>
@@ -265,6 +271,7 @@ const CryptoChart = () => {
         onClose={handleModalClose}
         cryptoData={currentCryptoData || []}
         cryptoName={currentCryptoName}
+        timeframe={selectedPeriod}
       />
     </>
   );
