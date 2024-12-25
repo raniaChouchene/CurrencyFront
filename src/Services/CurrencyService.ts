@@ -25,7 +25,14 @@ export const fetchLast30CryptoPrices = async () => {
     throw error;
   }
 };
-
+export const deleteAlert = async (alertId: string): Promise<void> => {
+  const response = await fetch(` ${endpoint}/alerts/${alertId}`, {
+    method: "DELETE",
+  });
+  if (!response.ok) {
+    throw new Error("Failed to delete alert");
+  }
+};
 export const fetchHistoricalCryptoData = async (
   currencyName: string,
   period: string
@@ -47,6 +54,7 @@ export const fetchHistoricalCryptoData = async (
     throw error;
   }
 };
+
 export const handleSetAlerts = async (
   selectedCryptoId: string,
   threshold: number,
@@ -61,26 +69,19 @@ export const handleSetAlerts = async (
 
   try {
     const response = await axios.post(
-      `${endpoint}/cryptocurrencies/alerts`,
-      {
-        cryptoId: selectedCryptoId,
-        threshold,
-        thresholdType,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
+      `${endpoint}/alert/alerts`,
+      { cryptoId: selectedCryptoId, threshold, thresholdType },
+      { headers: { Authorization: `Bearer ${token}` } }
     );
     alert("Alert set successfully!");
   } catch (error) {
-    console.error("Error setting alert:", error);
+    console.error("Error setting alert:");
     alert("Failed to set alert");
   }
 };
-export const fetchAlertHistory = async () => {
-  const token = localStorage.getItem("token"); // Retrieve the token from localStorage
+
+export const fetchAlertsHistory = async () => {
+  const token = localStorage.getItem("token");
 
   if (!token) {
     alert("You must be logged in to view your alert history.");
@@ -88,7 +89,7 @@ export const fetchAlertHistory = async () => {
   }
 
   try {
-    const response = await axios.get(`${endpoint}/cryptocurrencies/history`, {
+    const response = await axios.get(`${endpoint}/alert/history`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

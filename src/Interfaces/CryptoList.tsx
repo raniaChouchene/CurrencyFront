@@ -43,6 +43,7 @@ const CryptoList = () => {
     const fetchData = async () => {
       try {
         const data = await fetchMostRecentCryptoData();
+        console.log(data);
         setCryptoData(data);
         setFilteredCryptoData(data);
       } catch (err) {

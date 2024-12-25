@@ -6,6 +6,7 @@ import CryptoList from "./Interfaces/CryptoList";
 import { Layout } from "antd";
 import CreateAccount from "./Interfaces/User/CreateAccount";
 import CryptoChart from "./Interfaces/CryptoChart";
+import AlertHistory from "./Interfaces/AlertHistory";
 
 const { Content } = Layout;
 
@@ -41,6 +42,10 @@ function App() {
             <Route
               path="/register"
               element={<FullScreenWrapper component={<CreateAccount />} />}
+            />
+            <Route
+              path="/alertHistory"
+              element={<FullScreenWrapper component={<AlertHistory />} />}
             />
             <Route
               path="/CryptoList"

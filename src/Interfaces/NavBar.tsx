@@ -95,7 +95,7 @@ const NavBar = () => {
               backgroundColor: "rgba(0, 0, 0, 0.6)",
             }}
           >
-            <Link to="/AlertHistory" style={{ color: "#fff" }}>
+            <Link to="/alertHistory" style={{ color: "#fff" }}>
               Alert History
             </Link>
           </Menu.Item>
