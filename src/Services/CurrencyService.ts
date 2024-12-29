@@ -101,3 +101,15 @@ export const fetchAlertsHistory = async () => {
     alert("Failed to fetch alert history");
   }
 };
+export const forecastCryptoPrices = async (data: { currencyName: string }) => {
+  try {
+    const response = await axios.post(
+      `${endpoint}/cryptocurrencies/forecast`,
+      data
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error forecasting crypto prices:", error);
+    throw error;
+  }
+};

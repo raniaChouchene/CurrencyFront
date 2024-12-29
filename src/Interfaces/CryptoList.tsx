@@ -3,6 +3,7 @@ import { Crypto } from "../Types/Currency";
 import {
   fetchMostRecentCryptoData,
   handleSetAlerts,
+  forecastCryptoPrices,
 } from "../Services/CurrencyService";
 import {
   Table,
@@ -22,11 +23,32 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  TextField as MuiTextField,
   Select,
   MenuItem,
 } from "@mui/material";
 import CurrencyBitcoinIcon from "@mui/icons-material/CurrencyBitcoin";
+import { Line } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  ChartData,
+} from "chart.js";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const CryptoList = () => {
   const [cryptoData, setCryptoData] = useState<Crypto[]>([]);
@@ -34,30 +56,32 @@ const CryptoList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [open, setOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedCrypto, setSelectedCrypto] = useState<Crypto | null>(null);
-  const [threshold, setThreshold] = useState("");
+  const [threshold, setThreshold] = useState<string>("");
+  const [thresholdType, setThresholdType] = useState<string>("above");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [thresholdType, setThresholdType] = useState("");
+  const [forecastResult, setForecastResult] = useState<{
+    historicalData: { date: string; price: number }[];
+    forecastedValues: { date: string; price: number }[];
+  } | null>(null);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await fetchMostRecentCryptoData();
-        console.log(data);
         setCryptoData(data);
         setFilteredCryptoData(data);
       } catch (err) {
         setError("Failed to fetch crypto data");
-        console.error("Failed to fetch crypto data", err);
+        console.error("Error fetching crypto data:", err);
       } finally {
         setLoading(false);
       }
     };
 
     const token = localStorage.getItem("token");
-    if (token) {
-      setIsLoggedIn(true);
-    }
+    setIsLoggedIn(!!token);
 
     fetchData();
   }, []);
@@ -71,127 +95,106 @@ const CryptoList = () => {
 
   const handleOpenDialog = (crypto: Crypto) => {
     setSelectedCrypto(crypto);
-    setOpen(true);
+    setDialogOpen(true);
   };
 
   const handleCloseDialog = () => {
-    setOpen(false);
+    setDialogOpen(false);
     setThreshold("");
     setSelectedCrypto(null);
   };
 
   const handleSetAlert = () => {
-    if (selectedCrypto && threshold && thresholdType) {
+    if (selectedCrypto && threshold) {
       try {
         handleSetAlerts(selectedCrypto.id, Number(threshold), thresholdType);
-      } catch (error) {
-        console.error("Error setting alert:", error);
+        console.log(
+          `Alert set for ${selectedCrypto.name} at ${thresholdType} ${threshold}`
+        );
+      } catch (err) {
+        console.error("Error setting alert:", err);
       }
-      console.log(
-        `Alert configured for ${selectedCrypto.name} at price: ${threshold} ant type: ${thresholdType}`
-      );
-
       handleCloseDialog();
+    }
+  };
+
+  const handleForecast = async (crypto: Crypto) => {
+    setSelectedCrypto(crypto);
+    try {
+      const forecast = await forecastCryptoPrices({
+        currencyName: crypto.name,
+      });
+      setForecastResult(forecast);
+      console.log("Forecast result:", forecast);
+    } catch (err) {
+      console.error("Error forecasting prices:", err);
     }
   };
 
   if (loading) {
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          marginTop: "20px",
-          width: "100%",
-        }}
-      >
+      <Box display="flex" justifyContent="center" mt={5}>
         <CircularProgress />
-      </div>
+      </Box>
     );
   }
 
   if (error) {
-    return <div style={{ color: "red", textAlign: "center" }}>{error}</div>;
+    return (
+      <Typography color="error" align="center">
+        {error}
+      </Typography>
+    );
   }
 
-  return (
-    <div
-      style={{
-        padding: "20px",
-        height: "100%",
-        boxSizing: "border-box",
-        alignContent: "center",
-        minHeight: "100vh",
-        width: "100%",
-      }}
-    >
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          marginBottom: "20px",
-          flexDirection: "column",
-          width: "100%",
-        }}
-      >
-        <Typography
-          variant="h4"
-          component="h2"
-          sx={{
-            fontFamily: "cursive",
-            color: "#2e4053",
-            textAlign: "center",
-            fontWeight: "bold",
-            marginBottom: "20px",
-            width: "100%",
-          }}
-        >
-          <CurrencyBitcoinIcon
-            sx={{
-              fontSize: "40px",
-              color: "#2e4053",
-              marginRight: "8px",
-            }}
-          />
-          Most Recent Cryptocurrencies
-        </Typography>
+  const chartData: ChartData<"line"> = {
+    labels: [
+      ...(forecastResult?.forecastedValues.map((data) => data.date) || []),
+    ],
+    datasets: [
+      {
+        label: "Forecasted Data",
+        data: forecastResult?.forecastedValues.map((data) => data.price) || [],
+        borderColor: "orange",
+        backgroundColor: "rgba(255, 165, 0, 0.2)",
+      },
+    ],
+  };
 
+  return (
+    <Box p={3}>
+      <Box mb={3} textAlign="center">
+        <Typography variant="h4" gutterBottom>
+          <CurrencyBitcoinIcon fontSize="large" /> Most Recent Cryptocurrencies
+        </Typography>
         <TextField
           label="Search by Name"
           variant="outlined"
-          fullWidth
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          sx={{
-            maxWidth: "400px",
-            width: "100%",
-            marginBottom: "20px",
-          }}
+          fullWidth
+          sx={{ maxWidth: 400, mx: "auto" }}
         />
       </Box>
 
-      <TableContainer component={Paper} sx={{ width: "100%" }}>
-        <Table aria-label="cryptocurrency table" sx={{ width: "100%" }}>
+      <TableContainer component={Paper}>
+        <Table>
           <TableHead>
             <TableRow>
-              <TableCell align="right">Name</TableCell>
+              <TableCell align="left">Name</TableCell>
               <TableCell align="right">Price</TableCell>
               <TableCell align="right">Volume</TableCell>
               <TableCell align="right">Market Cap</TableCell>
-              {isLoggedIn && <TableCell align="right">Actions</TableCell>}{" "}
-              {/* Only show if logged in */}
+              {isLoggedIn && <TableCell align="right">Actions</TableCell>}
             </TableRow>
           </TableHead>
           <TableBody>
             {filteredCryptoData.map((crypto, index) => (
               <TableRow
                 key={crypto.id}
-                sx={{
-                  backgroundColor: index % 2 === 0 ? "#f5f5f5" : "#ffffff",
-                }}
+                sx={{ backgroundColor: index % 2 === 0 ? "#f9f9f9" : "white" }}
               >
-                <TableCell align="right">{crypto.name}</TableCell>
+                <TableCell align="left">{crypto.name}</TableCell>
                 <TableCell align="right">${crypto.price.toFixed(2)}</TableCell>
                 <TableCell align="right">
                   ${crypto.volume.toLocaleString()}
@@ -199,63 +202,95 @@ const CryptoList = () => {
                 <TableCell align="right">
                   ${crypto.marketCap.toLocaleString()}
                 </TableCell>
-                <TableCell align="right">
-                  {isLoggedIn && (
+                {isLoggedIn && (
+                  <TableCell align="right">
                     <Button
                       variant="contained"
-                      style={{ backgroundColor: "#2e4053", color: "white" }}
                       onClick={() => handleOpenDialog(crypto)}
                     >
                       Set Alert
                     </Button>
-                  )}
-                </TableCell>
+                    <Button
+                      variant="outlined"
+                      sx={{ ml: 1 }}
+                      onClick={() => handleForecast(crypto)}
+                    >
+                      Forecast
+                    </Button>
+                  </TableCell>
+                )}
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
 
-      <Dialog open={open} onClose={handleCloseDialog}>
+      {/* Alert Dialog */}
+      <Dialog open={dialogOpen} onClose={handleCloseDialog}>
         <DialogTitle>Set Price Alert</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Set an alert for {selectedCrypto?.name}. You will be notified when
-            the price falls below your threshold.
+            Set an alert for {selectedCrypto?.name} when the price is{" "}
+            <b>{thresholdType}</b> the specified threshold.
           </DialogContentText>
           <Select
-            defaultValue="Above"
             value={thresholdType}
             onChange={(e) => setThresholdType(e.target.value)}
+            fullWidth
           >
             <MenuItem value="below">Below</MenuItem>
             <MenuItem value="above">Above</MenuItem>
           </Select>
-          <MuiTextField
-            autoFocus
-            margin="dense"
-            label="Price Threshold (USD)"
+          <TextField
             type="number"
-            fullWidth
+            label="Threshold (USD)"
             value={threshold}
             onChange={(e) => setThreshold(e.target.value)}
+            fullWidth
+            margin="normal"
           />
         </DialogContent>
-
         <DialogActions>
-          <Button onClick={handleCloseDialog} color="secondary">
-            Cancel
-          </Button>
+          <Button onClick={handleCloseDialog}>Cancel</Button>
           <Button
             onClick={handleSetAlert}
-            style={{ backgroundColor: "#2e4053", color: "white" }}
+            variant="contained"
             disabled={!isLoggedIn}
           >
             Set Alert
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+
+      {forecastResult && (
+        <Dialog
+          open={!!forecastResult}
+          onClose={() => setForecastResult(null)}
+          maxWidth="lg"
+          fullWidth
+        >
+          <DialogTitle>Forecast for {selectedCrypto?.name}</DialogTitle>
+          <DialogContent>
+            <Line
+              data={chartData}
+              options={{
+                responsive: true,
+                plugins: {
+                  legend: { position: "top" },
+                  title: {
+                    display: true,
+                    text: `Price Forecast: ${selectedCrypto?.name}`,
+                  },
+                },
+              }}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setForecastResult(null)}>Close</Button>
+          </DialogActions>
+        </Dialog>
+      )}
+    </Box>
   );
 };
 

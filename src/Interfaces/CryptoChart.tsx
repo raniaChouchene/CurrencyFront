@@ -269,6 +269,7 @@ const CryptoChart = () => {
       <ChartModal
         visible={modalVisible}
         onClose={handleModalClose}
+        //@ts-expect-error
         cryptoData={currentCryptoData || []}
         cryptoName={currentCryptoName}
         timeframe={selectedPeriod}
