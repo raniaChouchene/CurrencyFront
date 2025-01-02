@@ -51,11 +51,7 @@ function Home() {
             seuils.
           </p>
         </div>
-        <div className="service-box">
-          <FaEnvelope className="service-icon" />
-          <h3>Alertes par email</h3>
-          <p>Recevez des notifications directement dans votre boîte email.</p>
-        </div>
+
         <div className="service-box">
           <FaList className="service-icon" />
           <h3>Liste des alertes</h3>
