@@ -1,32 +1,23 @@
 import { Modal } from "antd";
-import { Line } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   Tooltip,
   Legend,
-  LineElement,
+  BarElement,
   CategoryScale,
   LinearScale,
-  PointElement,
 } from "chart.js";
 import { useState, useEffect } from "react";
 
-// Register chart.js components
-ChartJS.register(
-  Tooltip,
-  Legend,
-  LineElement,
-  CategoryScale,
-  LinearScale,
-  PointElement
-);
+ChartJS.register(Tooltip, Legend, BarElement, CategoryScale, LinearScale);
 
 type ChartModalProps = {
   visible: boolean;
   onClose: () => void;
-  cryptoData: { timestamp: string; price: number }[]; // Adjusted for price field
+  cryptoData: { timestamp: string; price: number }[];
   cryptoName: string;
-  timeframe: "week" | "month"; // New prop for selecting timeframe
+  timeframe: "week" | "month";
 };
 
 const ChartModal = ({
@@ -42,42 +33,29 @@ const ChartModal = ({
       {
         label: `${cryptoName} Price (USD)`,
         data: [] as number[],
+        backgroundColor: "rgba(75,192,192,0.6)",
         borderColor: "rgba(75,192,192,1)",
-        backgroundColor: "rgba(75,192,192,0.2)",
-        tension: 0.4,
+        borderWidth: 1,
       },
     ],
   });
 
   useEffect(() => {
     if (cryptoData.length > 0) {
-      // Get the current date
       const now = new Date();
 
-      // Filter based on timeframe (week or month)
       const filteredData = cryptoData.filter((entry) => {
         const entryDate = new Date(entry.timestamp);
         const timeDiff = now.getTime() - entryDate.getTime();
 
-        // Check if the entry is within the selected timeframe
         if (timeframe === "week") {
-          console.log(
-            `Week filter - Entry: ${entry.timestamp}, TimeDiff: ${timeDiff}, Now: ${now}`
-          );
-          return timeDiff <= 7 * 24 * 60 * 60 * 1000; // 7 days
+          return timeDiff <= 7 * 24 * 60 * 60 * 1000;
         } else if (timeframe === "month") {
-          console.log(
-            `Month filter - Entry: ${entry.timestamp}, TimeDiff: ${timeDiff}, Now: ${now}`
-          );
-          return timeDiff <= 30 * 24 * 60 * 60 * 1000; // 30 days
+          return timeDiff <= 30 * 24 * 60 * 60 * 1000;
         }
         return false;
       });
 
-      // Log the filtered data for debugging
-      console.log("Filtered Data:", filteredData);
-
-      // Format data for chart
       const formattedData = filteredData.map((entry) => {
         const date = new Date(entry.timestamp);
         const formattedTimestamp = `${date.getFullYear()}-${(
@@ -98,14 +76,14 @@ const ChartModal = ({
           {
             label: `${cryptoName} Price (USD)`,
             data: formattedData.map((entry) => entry.value),
+            backgroundColor: "rgba(75,192,192,0.6)",
             borderColor: "rgba(75,192,192,1)",
-            backgroundColor: "rgba(75,192,192,0.2)",
-            tension: 0.4,
+            borderWidth: 1,
           },
         ],
       });
     }
-  }, [cryptoData, cryptoName, timeframe]); // Add 'timeframe' to dependency array
+  }, [cryptoData, cryptoName, timeframe]);
 
   return (
     <Modal
@@ -115,7 +93,7 @@ const ChartModal = ({
       footer={null}
       width={800}
     >
-      <Line
+      <Bar
         data={chartData}
         options={{
           responsive: true,
@@ -134,10 +112,6 @@ const ChartModal = ({
               title: {
                 display: true,
                 text: "Time",
-              },
-              ticks: {
-                autoSkip: true,
-                maxTicksLimit: 10,
               },
             },
             y: {
