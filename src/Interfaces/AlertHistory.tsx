@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { Table, Button, Space, message } from "antd";
-import { fetchAlertsHistory, deleteAlert } from "../Services/CurrencyService";
+import { Table } from "antd";
+import { fetchAlertsHistory } from "../Services/CurrencyService";
 import {
-  DeleteOutlined,
   UpCircleOutlined,
   DownCircleOutlined,
   GoldOutlined,
@@ -37,16 +36,16 @@ const AlertHistory = () => {
     fetchAlertHistory();
   }, []);
 
-  const handleDelete = async (alertId: string) => {
-    try {
-      await deleteAlert(alertId);
-      setAlerts(alerts.filter((alert) => alert._id !== alertId));
-      message.success("Alert deleted successfully!");
-    } catch (error) {
-      console.error("Error deleting alert:", error);
-      message.error("Failed to delete alert.");
-    }
-  };
+  // const handleDelete = async (alertId: string) => {
+  //   try {
+  //     await deleteAlert(alertId);
+  //     setAlerts(alerts.filter((alert) => alert._id !== alertId));
+  //     message.success("Alert deleted successfully!");
+  //   } catch (error) {
+  //     console.error("Error deleting alert:", error);
+  //     message.error("Failed to delete alert.");
+  //   }
+  // };
 
   if (loading) {
     return <div>Loading...</div>;

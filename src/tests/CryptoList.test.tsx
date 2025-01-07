@@ -1,19 +1,19 @@
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { vi, describe, test, beforeEach } from "vitest";
+import { render, screen } from "@testing-library/react";
 import CryptoList from "../Interfaces/CryptoList";
 import {
   fetchMostRecentCryptoData,
-  handleSetAlerts,
   forecastCryptoPrices,
 } from "../Services/CurrencyService";
 
-jest.mock("../Services/CurrencyService", () => ({
-  fetchMostRecentCryptoData: jest.fn(),
-  handleSetAlerts: jest.fn(),
-  forecastCryptoPrices: jest.fn(),
+vi.mock("../Services/CurrencyService", () => ({
+  fetchMostRecentCryptoData: vi.fn(),
+  handleSetAlerts: vi.fn(),
+  forecastCryptoPrices: vi.fn(),
 }));
 
-jest.mock("react-chartjs-2", () => ({
-  Line: jest.fn(() => <div>Chart</div>),
+vi.mock("react-chartjs-2", () => ({
+  Line: vi.fn(() => <div>Chart</div>),
 }));
 
 describe("CryptoList", () => {
@@ -35,8 +35,8 @@ describe("CryptoList", () => {
   ];
 
   beforeEach(() => {
-    fetchMostRecentCryptoData.mockResolvedValue(mockCryptoData);
-    forecastCryptoPrices.mockResolvedValue({
+    vi.mocked(fetchMostRecentCryptoData).mockResolvedValue(mockCryptoData);
+    vi.mocked(forecastCryptoPrices).mockResolvedValue({
       historicalData: [
         { date: "2021-01-01", price: 50000 },
         { date: "2021-01-02", price: 51000 },
@@ -63,7 +63,7 @@ describe("CryptoList", () => {
   });
 
   test("shows error message if fetching fails", async () => {
-    fetchMostRecentCryptoData.mockRejectedValue(
+    vi.mocked(fetchMostRecentCryptoData).mockRejectedValue(
       new Error("Failed to fetch data")
     );
     render(<CryptoList />);
@@ -87,7 +87,7 @@ describe("CryptoList", () => {
   });
 
   test("handles missing forecast data gracefully", async () => {
-    forecastCryptoPrices.mockResolvedValue({
+    vi.mocked(forecastCryptoPrices).mockResolvedValue({
       historicalData: [],
       forecastedValues: [],
     });

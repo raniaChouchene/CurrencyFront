@@ -4,7 +4,6 @@ import {
   FaChartLine,
   FaClock,
   FaBell,
-  FaEnvelope,
   FaList,
   FaLightbulb,
   FaChartPie,

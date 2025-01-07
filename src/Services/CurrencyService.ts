@@ -68,7 +68,7 @@ export const handleSetAlerts = async (
   }
 
   try {
-    const response = await axios.post(
+    await axios.post(
       `${endpoint}/alert/alerts`,
       { cryptoId: selectedCryptoId, threshold, thresholdType },
       { headers: { Authorization: `Bearer ${token}` } }
