@@ -14,7 +14,10 @@ function Home() {
     <div className="txs-home">
       <div className="presentation">
         <div className="content">
-          <h1>Gérez vos cryptomonnaies avec notre plateforme avancée</h1>
+          <h1>
+            Gérez vos cryptomonnaies avec notre plateforme avancée Des
+            maintenant
+          </h1>
           <p>
             Découvrez des outils puissants pour analyser, prévoir et recevoir
             des alertes personnalisées. Tout ce dont vous avez besoin pour
