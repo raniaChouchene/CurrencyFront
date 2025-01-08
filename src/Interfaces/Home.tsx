@@ -21,7 +21,8 @@ function Home() {
           <p>
             Découvrez des outils puissants pour analyser, prévoir et recevoir
             des alertes personnalisées. Tout ce dont vous avez besoin pour
-            rester informé et réagir rapidement aux évolutions du marché.
+            rester informé et réagir rapidement aux évolutions du marché des
+            cryptomonnaies.
           </p>
           <a href="#" className="download-btn">
             Commencez dès maintenant
