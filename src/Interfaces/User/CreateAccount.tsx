@@ -71,7 +71,6 @@ const CreateAccount = () => {
               <UserOutlined />
             </div>
 
-            {/* Name Field */}
             <Form.Item
               name="name"
               label="Full Name"
@@ -102,7 +101,6 @@ const CreateAccount = () => {
               />
             </Form.Item>
 
-            {/* Password Field */}
             <Form.Item
               name="password"
               label="Password"
@@ -118,7 +116,6 @@ const CreateAccount = () => {
               />
             </Form.Item>
 
-            {/* Confirm Password Field */}
             <Form.Item
               name="confirmPassword"
               label="Confirm Password"

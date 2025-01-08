@@ -1,11 +1,11 @@
 import { vi, describe, test, beforeEach, expect } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import CryptoList from "../Interfaces/CryptoList";
 import {
   fetchMostRecentCryptoData,
-  handleSetAlerts,
   forecastCryptoPrices,
 } from "../Services/CurrencyService";
+import "@testing-library/jest-dom";
 
 vi.mock("../Services/CurrencyService", () => ({
   fetchMostRecentCryptoData: vi.fn(),
@@ -13,6 +13,7 @@ vi.mock("../Services/CurrencyService", () => ({
   forecastCryptoPrices: vi.fn(),
 }));
 
+// Mock the Chart component
 vi.mock("react-chartjs-2", () => ({
   Line: vi.fn(() => <div>Chart</div>),
 }));
@@ -52,6 +53,7 @@ describe("CryptoList", () => {
   test("renders loading state initially", () => {
     render(<CryptoList />);
     const loadingSpinner = screen.getByRole("progressbar");
+    expect(loadingSpinner).toBeInTheDocument();
   });
 
   test("renders crypto data after fetching", async () => {
@@ -61,6 +63,9 @@ describe("CryptoList", () => {
 
     const bitcoinRow = screen.getByText("Bitcoin");
     const ethereumRow = screen.getByText("Ethereum");
+
+    expect(bitcoinRow).toBeInTheDocument();
+    expect(ethereumRow).toBeInTheDocument();
   });
 
   test("shows error message if fetching fails", async () => {
@@ -69,12 +74,14 @@ describe("CryptoList", () => {
     );
     render(<CryptoList />);
     const errorMessage = await screen.findByText(/Failed to fetch crypto data/);
+    expect(errorMessage).toBeInTheDocument();
   });
 
   test("filters crypto data by search query", async () => {
     render(<CryptoList />);
     await screen.findByText("Bitcoin");
-    await screen.findByText("Ethereum");
+
+    await waitFor(() => screen.getByText("Bitcoin"));
   });
 
   test("opens dialog and sets alert", async () => {

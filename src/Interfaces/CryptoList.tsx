@@ -39,6 +39,7 @@ import {
   Legend,
   ChartData,
 } from "chart.js";
+import { BellOutlined, LineChartOutlined } from "@ant-design/icons";
 
 ChartJS.register(
   CategoryScale,
@@ -182,6 +183,7 @@ const CryptoList = () => {
           <TableHead>
             <TableRow>
               <TableCell align="left">Name</TableCell>
+
               <TableCell align="right">Price</TableCell>
               <TableCell align="right">Volume</TableCell>
               <TableCell align="right">Market Cap</TableCell>
@@ -195,6 +197,7 @@ const CryptoList = () => {
                 sx={{ backgroundColor: index % 2 === 0 ? "#f9f9f9" : "white" }}
               >
                 <TableCell align="left">{crypto.name}</TableCell>
+
                 <TableCell align="right">${crypto.price.toFixed(2)}</TableCell>
                 <TableCell align="right">
                   ${crypto.volume.toLocaleString()}
@@ -206,15 +209,43 @@ const CryptoList = () => {
                   <TableCell align="right">
                     <Button
                       variant="contained"
+                      color="success"
                       onClick={() => handleOpenDialog(crypto)}
+                      sx={{
+                        textTransform: "none",
+                        backgroundColor: "#4CAF50",
+                        color: "#fff",
+                        "&:hover": {
+                          backgroundColor: "#45a049",
+                        },
+
+                        alignItems: "center",
+                      }}
                     >
+                      <BellOutlined style={{ marginRight: 8, fontSize: 20 }} />
                       Set Alert
                     </Button>
+
                     <Button
                       variant="outlined"
-                      sx={{ ml: 1 }}
+                      color="primary"
+                      sx={{
+                        ml: 1,
+                        textTransform: "none",
+                        borderColor: "#2196F3",
+                        color: "#2196F3",
+                        "&:hover": {
+                          backgroundColor: "#BBDEFB",
+                          borderColor: "#1976D2",
+                        },
+
+                        alignItems: "center",
+                      }}
                       onClick={() => handleForecast(crypto)}
                     >
+                      <LineChartOutlined
+                        style={{ marginRight: 8, fontSize: 20 }}
+                      />
                       Forecast
                     </Button>
                   </TableCell>

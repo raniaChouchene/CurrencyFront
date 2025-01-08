@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { Card, Row, Col, Typography, Spin, Input, Button } from "antd";
 import {
+  CalendarOutlined,
   CaretDownOutlined,
   CiOutlined,
+  ClockCircleOutlined,
   DashboardOutlined,
   DollarCircleOutlined,
   EnterOutlined,
@@ -25,7 +27,7 @@ type GroupedCryptoData = {
 const CryptoChart = () => {
   const [cryptoData, setCryptoData] = useState<GroupedCryptoData[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState(""); // Store search term
+  const [searchTerm, setSearchTerm] = useState("");
   const [selectedPeriod, setSelectedPeriod] = useState<"month" | "week">(
     "month"
   );
@@ -42,7 +44,7 @@ const CryptoChart = () => {
         const data = await fetchLast30CryptoPrices();
         console.log(data);
         if (Array.isArray(data)) {
-          setCryptoData(data); // Set data to state
+          setCryptoData(data);
         } else {
           console.error("Invalid data format received");
         }
@@ -247,14 +249,21 @@ const CryptoChart = () => {
                           selectedPeriod === "month" ? "primary" : "default"
                         }
                         onClick={() => handlePeriodChange(crypto.name, "month")}
-                        style={{ marginRight: 8 }}
+                        style={{
+                          marginRight: 8,
+                          backgroundColor:
+                            selectedPeriod === "month" ? "#4CAF50" : "#E0E0E0",
+                          color: selectedPeriod === "month" ? "#fff" : "#000",
+                        }}
                       >
+                        <CalendarOutlined style={{ marginRight: 8 }} />
                         Last Month
                       </Button>
                       <Button
                         type={selectedPeriod === "week" ? "primary" : "default"}
                         onClick={() => handlePeriodChange(crypto.name, "week")}
                       >
+                        <ClockCircleOutlined style={{ marginRight: 8 }} />
                         Last week
                       </Button>
                     </div>

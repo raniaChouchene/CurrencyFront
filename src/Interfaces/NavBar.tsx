@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Layout, Menu } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -31,6 +31,8 @@ const NavBar = () => {
     <Sider
       width={250}
       style={{
+        position: "relative",
+        height: "100vh",
         background: `url('https://m.foolcdn.com/media/dubs/images/original_imagesoriginal_imageshttpsg.foolcdn.c.width-880_SfbkM9V.jpg') repeat-y center top`, // Repeat image vertically
         backgroundSize: "cover",
         color: "#fff",

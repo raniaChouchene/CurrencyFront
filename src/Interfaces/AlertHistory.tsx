@@ -6,7 +6,7 @@ import {
   DownCircleOutlined,
   GoldOutlined,
   HistoryOutlined,
-} from "@ant-design/icons"; // Import the icons
+} from "@ant-design/icons";
 
 interface Alert {
   _id: string;
@@ -35,17 +35,6 @@ const AlertHistory = () => {
 
     fetchAlertHistory();
   }, []);
-
-  // const handleDelete = async (alertId: string) => {
-  //   try {
-  //     await deleteAlert(alertId);
-  //     setAlerts(alerts.filter((alert) => alert._id !== alertId));
-  //     message.success("Alert deleted successfully!");
-  //   } catch (error) {
-  //     console.error("Error deleting alert:", error);
-  //     message.error("Failed to delete alert.");
-  //   }
-  // };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -88,22 +77,6 @@ const AlertHistory = () => {
       dataIndex: "thresholdType",
       key: "thresholdType",
     },
-    // Uncomment below to add the delete button
-    // {
-    //   title: "Action",
-    //   key: "action",
-    //   render: (_: any, record: Alert) => (
-    //     <Space size="middle">
-    //       <Button
-    //         danger
-    //         icon={<DeleteOutlined />}
-    //         onClick={() => handleDelete(record._id)}
-    //       >
-    //         Delete
-    //       </Button>
-    //     </Space>
-    //   ),
-    // },
   ];
 
   return (
