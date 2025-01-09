@@ -183,7 +183,7 @@ const CryptoList = () => {
           <TableHead>
             <TableRow>
               <TableCell align="left">Name</TableCell>
-
+              <TableCell align="right"></TableCell>
               <TableCell align="right">Price</TableCell>
               <TableCell align="right">Volume</TableCell>
               <TableCell align="right">Market Cap</TableCell>
@@ -196,7 +196,23 @@ const CryptoList = () => {
                 key={crypto.id}
                 sx={{ backgroundColor: index % 2 === 0 ? "#f9f9f9" : "white" }}
               >
-                <TableCell align="left">{crypto.name}</TableCell>
+                <TableCell align="left">
+                  <span className="font-semibold text-gray-800 text-sm sm:text-base truncate hover:text-blue-600 transition-all duration-200 ease-in-out rounded-lg px-2 py-1 hover:bg-gray-100">
+                    {crypto.name}
+                  </span>
+                </TableCell>
+
+                <TableCell align="left">
+                  <img
+                    src={`https://assets.coincap.io/assets/icons/${crypto.symbol?.toLowerCase()}@2x.png`}
+                    alt={crypto.name}
+                    className="w-8 h-8 object-contain rounded-full shadow-sm"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      target.onerror = null;
+                    }}
+                  />
+                </TableCell>
 
                 <TableCell align="right">${crypto.price.toFixed(2)}</TableCell>
                 <TableCell align="right">

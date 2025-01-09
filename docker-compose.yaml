@@ -1,0 +1,8 @@
+services:
+  vite:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: CurrencyFront
+    ports:
+      - "80:80"
